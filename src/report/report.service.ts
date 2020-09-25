@@ -77,11 +77,11 @@ export class ReportService {
     }
 
     const mailSender = nodemailer.createTransport({
-      host: "smtp.mailtrap.io",
-      port: 2525,
+      host: process.env.HOST,
+      port: parseInt(process.env.PORT),
       auth: {
-        user: "cc34e3a6a12c6e",
-        pass: "17175edecddd5b"
+        user: process.env.USER,
+        pass: process.env.PASS
       }
     });
 

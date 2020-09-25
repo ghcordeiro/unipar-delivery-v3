@@ -31,6 +31,7 @@ import { JwtStrategy } from './auth/jwt.strategy';
 import { ReportService } from './report/report.service';
 import { ReportController } from './report/report.controller';
 import { Report } from './report/report.entity';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -73,7 +74,8 @@ import { Report } from './report/report.entity';
       secret: jwtConstants.secret,
       signOptions: { expiresIn: '1d' },
     }),
-    ScheduleModule.forRoot()
+    ScheduleModule.forRoot(),
+    ConfigModule.forRoot()
   ],
   controllers: [
     FranchiseeController,

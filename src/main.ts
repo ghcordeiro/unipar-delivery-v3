@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import 'dotenv';
 
 import express from 'express';
 import uploadConfig from './upload';
