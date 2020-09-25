@@ -6,6 +6,7 @@ import { Response } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express/multer';
 import crypto from 'crypto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { fi } from 'date-fns/locale';
 
 
 const imageFileFilter = (request, file, callback) => {
@@ -60,12 +61,13 @@ export class ProductController {
   @UseGuards(JwtAuthGuard)
   @Post("/:id/photo")
   @UseInterceptors(FileInterceptor('file'))
-  async uploadedFile(@Param() id: string, @UploadedFile() file, @Res() res: Response) {
+  async uploadedFile(@Param() id: string, @UploadedFile() file: Express.Multer.File, @Res() res: Response) {
 
     const fileHash = crypto.randomBytes(10).toString('hex');
     const fileName = `${fileHash}-${file.originalname}`;
 
     const product = await this.findById(id);
+    console.log(file)
 
     product.photo = fileName;
 

@@ -1,26 +1,26 @@
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Customer } from './customer.entity';
+import { Franchisee } from './franchisee.entity';
 
 @Injectable()
-export class CustomerService {
+export class FranchiseeService {
 
   constructor(
-    @InjectRepository(Customer)
-    private readonly repository: Repository<Customer>) {
+    @InjectRepository(Franchisee)
+    private readonly repository: Repository<Franchisee>) {
   }
 
-  save(customer: Customer) {
-    return this.repository.save(customer);
+  save(franchisee: Franchisee) {
+    return this.repository.save(franchisee);
   }
 
   delete(id: string) {
     return this.repository.delete(id);
   }
 
-  update(id: string, customer: Customer) {
-    return this.repository.update(id, customer);
+  update(id: string, franchisee: Franchisee) {
+    return this.repository.update(id, franchisee);
   }
 
   findAll() {
@@ -31,10 +31,10 @@ export class CustomerService {
     return this.repository.findOne(id);
   }
 
-  findOne(cpf: string) {
+  findOne(cnpj: string) {
     return this.repository.findOne({
       where: {
-        cpf
+        cnpj
       }
     })
   }

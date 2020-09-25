@@ -10,5 +10,6 @@ async function bootstrap() {
   app.use('/files', express.static(uploadConfig.directory))
 
   await app.listen(3000);
+
 }
 bootstrap();

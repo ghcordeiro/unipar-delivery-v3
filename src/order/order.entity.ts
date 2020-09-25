@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, UpdateDateColumn, CreateDateColumn, OneToMany } from "typeorm";
-import { Customer } from '../customer/customer.entity';
+import { Franchisee } from '../franchisee/franchisee.entity';
 import { OrderItem } from "../orderItem/orderItem.entity";
 
 @Entity('order')
@@ -11,10 +11,10 @@ export class Order {
   @Column({ name: 'order_number', type: 'integer', generated: true, generatedType: 'STORED' })
   orderNumber: number;
 
-  @Column({ name: 'order_date', type: 'timestamp with time zone', default: 'now()' })
+  @Column({ name: 'order_date', type: 'date', default: 'now()' })
   orderDate: Date;
 
-  @Column({ name: 'delivery_date', type: 'timestamp with time zone' })
+  @Column({ name: 'delivery_date', type: 'timestamp' })
   deliveryDate: Date;
 
   @Column({ name: 'shipping_company', type: 'varchar', length: 80 })
@@ -38,8 +38,8 @@ export class Order {
   @CreateDateColumn()
   createdAt: Date;
 
-  @ManyToOne(type => Customer, customer => customer.order, { cascade: true, eager: true, onDelete: 'SET NULL' })
-  customer: Customer;
+  @ManyToOne(type => Franchisee, franchisee => franchisee.order, { cascade: true, eager: true, onDelete: 'SET NULL' })
+  franchisee: Franchisee;
 
   @OneToMany(type => OrderItem, orderItem => orderItem.order, { cascade: true, eager: true, onDelete: 'CASCADE' })
   orderItems: OrderItem[];

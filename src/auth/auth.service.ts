@@ -1,28 +1,29 @@
 import { Injectable } from '@nestjs/common';
-import { CustomerService } from '../customer/customer.service';
+import { FranchiseeService } from '../franchisee/franchisee.service';
 import { JwtService } from '@nestjs/jwt';
-import { Customer } from 'src/customer/customer.entity';
+import { Franchisee } from 'src/franchisee/franchisee.entity';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private customerService: CustomerService,
+    private franchiseeService: FranchiseeService,
     private jwtService: JwtService
   ) {}
 
-  async validateCustomer(cpf: string, pass: string): Promise<any> {
-    const customer = await this.customerService.findOne(cpf);
-    console.log(customer)
-    if (customer && customer.password == pass) {
-      return customer;
+  async validateFranchisee(cnpj: string, pass: string): Promise<any> {
+    const franchisee = await this.franchiseeService.findOne(cnpj);
+    console.log(franchisee)
+    if (franchisee && franchisee.password == pass) {
+      return franchisee;
     }
+    return null;
   }
 
-  async login(customer: Customer) {
-    const response = await this.validateCustomer(customer.cpf, customer.password);
+  async login(franchisee: Franchisee) {
+    const response = await this.validateFranchisee(franchisee.cnpj, franchisee.password);
     console.log(response)
     if(response){
-      const payload = { cpf: customer.cpf, sub: customer.id };
+      const payload = { cnpj: franchisee.cnpj, sub: franchisee.id };
       return {
         access_token: this.jwtService.sign(payload),
       };

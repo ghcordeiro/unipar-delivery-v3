@@ -5,11 +5,13 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 
+import { ScheduleModule } from '@nestjs/schedule';
+
 import uploadConfig from './upload';
 
-import { Customer } from './customer/customer.entity';
-import { CustomerService } from './customer/customer.service';
-import { CustomerController } from './customer/customer.contoller';
+import { Franchisee } from './franchisee/franchisee.entity';
+import { FranchiseeService } from './franchisee/franchisee.service';
+import { FranchiseeController } from './franchisee/franchisee.contoller';
 
 import { Product } from './product/product.entity';
 import { ProductService } from './product/product.service';
@@ -26,6 +28,9 @@ import { AuthService } from './auth/auth.service';
 import { jwtConstants } from './auth/constants';
 import { AppController } from './app.controller';
 import { JwtStrategy } from './auth/jwt.strategy';
+import { ReportService } from './report/report.service';
+import { ReportController } from './report/report.controller';
+import { Report } from './report/report.entity';
 
 @Module({
   imports: [
@@ -37,46 +42,52 @@ import { JwtStrategy } from './auth/jwt.strategy';
       password: 'docker',
       database: 'unipar-delivery',
       entities: [
-        Customer,
+        Franchisee,
         Product,
         Order,
         OrderItem,
-        Stock
+        Stock,
+        Report
       ],
       synchronize: true,
       logging: true
     }),
     TypeOrmModule.forFeature([
-      Customer,
+      Franchisee,
       Product,
       Order,
       OrderItem,
-      Stock
+      Stock,
+      Report
     ]),
     MulterModule.register({
       dest: uploadConfig.directory,
       storage: uploadConfig.storage
     }),
     // ServeStaticModule.forRoot({
-    //   rootPath: uploadConfig.directory
+    //   rootPath: uploadConfig.directory,
+    //   serveRoot: '/files'
     // }),
     PassportModule,
     JwtModule.register({
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '60s' },
+      signOptions: { expiresIn: '1d' },
     }),
+    ScheduleModule.forRoot()
   ],
   controllers: [
-    CustomerController,
+    FranchiseeController,
     ProductController,
     OrderController,
-    AppController
+    AppController,
+    ReportController
   ],
   providers: [
-    CustomerService,
+    FranchiseeService,
     ProductService,
     OrderService,
     AuthService,
+    ReportService,
     JwtStrategy
   ],
   exports: [AuthService]
